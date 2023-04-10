@@ -38,10 +38,10 @@ jobs:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: 'App v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
       - name: Upload exe file
         uses: actions/upload-artifact@v2
         with:
           name: exe-artifact
-          path: ./src-tauri/target/release/bundle.exe
+          path: ./src-tauri/target/release/bundle/msi/atcc-workshop-uibuilder-tauri-pl___VERSION___x64_zh-CN.msi
