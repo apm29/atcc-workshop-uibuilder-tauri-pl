@@ -5,7 +5,6 @@ on:
       - release
     tags:
       - 'app-v*'
-   workflow_dispatch:
 
 jobs:
   publish-tauri:
