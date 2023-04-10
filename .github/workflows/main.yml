@@ -44,4 +44,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: exe-artifact
-          path: ./src-tauri/target/release/bundle.exe
+          path: ./src-tauri/target/release/bundle/msi/atcc-workshop-uibuilder-tauri-pl_0.0.0_x64_zh-CN.msi
