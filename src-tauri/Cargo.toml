@@ -1,7 +1,7 @@
 [package]
 name = "atcc-workshop-uibuilder-tauri-pl"
 version = "0.0.0"
-description = "安特磁材控制"
+description = "安特磁材配料控制"
 authors = ["apm29"]
 license = ""
 repository = ""
