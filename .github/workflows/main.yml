@@ -40,8 +40,4 @@ jobs:
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: false
           prerelease: false
-      - name: Upload exe file
-        uses: actions/upload-artifact@v2
-        with:
-          name: exe-artifact
-          path: ./src-tauri/target/release/bundle/msi/atcc-workshop-uibuilder-tauri-pl___VERSION___x64_zh-CN.msi
+
