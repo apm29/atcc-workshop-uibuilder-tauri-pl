@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri + Vue 3 App</title>
-  </head>
 
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./grafana_icon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>安特磁材-UIBUILDER</title>
+  <!-- <script src="http://localhost:8098"></script> -->
+</head>
+
+<body >
+  <div id="nr_protocol" style="position: fixed;top: -10000px;"><%- VITE_APP_NODERED_PROTOCOL %></div>
+  <div id="nr_host" style="position: fixed;top: -10000px;"><%- VITE_APP_NODERED_HOST %></div>
+  <div id="nr_namespace"  style="position: fixed;top: -10000px;"><%- VITE_APP_NODERED_UIBUILDER_NAMESPACE %></div>
+  <div id="mode"  style="position: fixed;top: -10000px;"><%- mode %></div>
+  <div id="app" ></div>
+  <script type="text/javascript">
+    const nr_protocol = document.getElementById('nr_protocol').textContent;
+    const nr_host = document.getElementById('nr_host').textContent;
+    const nr_namespace = document.getElementById('nr_namespace').textContent;
+    window.NODERED_PROTOCOL = nr_protocol
+    window.NODERED_HOST = nr_host
+    window.NODERED_UIBUILDER_NAMESPACE = nr_namespace
+  </script>
+  <script src="./core/socket.io.js"></script>
+  <script src="./core/uibuilderfe.js"></script>
+  <script src="./renderer.js"></script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
