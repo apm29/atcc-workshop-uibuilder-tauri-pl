@@ -1,27 +1,76 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
+import path from "path";
+import { defineConfig, loadEnv } from "vite";
+import vitePluginVue from "@vitejs/plugin-vue2";
+import AutoImport from "unplugin-auto-import/vite";
+import UnoCSS from 'unocss/vite'
+import { splitVendorChunkPlugin } from "vite";
+import requireContext from "rollup-plugin-require-context"; // 处理兼容webpack工具require-context;
+import Pages from 'vite-plugin-pages'
+import { createHtmlPlugin } from 'vite-plugin-html';
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => ({
-  plugins: [vue()],
-
-  // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
-  // prevent vite from obscuring rust errors
-  clearScreen: false,
-  // tauri expects a fixed port, fail if that port is not available
-  server: {
-    port: 1420,
-    strictPort: true,
-  },
-  // to make use of `TAURI_DEBUG` and other env variables
-  // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
-  envPrefix: ["VITE_", "TAURI_"],
-  build: {
-    // Tauri supports es2021
-    target: process.env.TAURI_PLATFORM == "windows" ? "chrome105" : "safari13",
-    // don't minify for debug builds
-    minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
-    // produce sourcemaps for debug builds
-    sourcemap: !!process.env.TAURI_DEBUG,
-  },
-}));
+export default defineConfig(({mode})=>{
+  //环境变量
+  const env = loadEnv(mode, process.cwd());
+  console.log(env);
+  return {
+    base: "./",
+    resolve: {
+      // 忽略后缀名的配置选项, 添加 .vue 选项时要记得原本默认忽略的选项也要手动写入
+      extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue"],
+      alias: [
+        {
+          find: "~/",
+          replacement: `${path.resolve(__dirname, "src")}/`,
+        },
+      ],
+    },
+    plugins: [
+      requireContext(),
+      vitePluginVue(),
+      // https://github.com/antfu/unplugin-auto-import
+      AutoImport({
+        imports: ["vue", "vue/macros", "@vueuse/core"],
+        dts: true,
+        dirs: ["./src/composables","./src/store"],
+        vueTemplate: true,
+      }),
+      // Components({
+      //   resolvers: [ElementUiResolver()]
+      // }),
+      // https://github.com/antfu/unocss
+      // see unocss.config.ts for config
+      UnoCSS(),
+      // legacy({
+      //   targets: ["defaults", "not ie < 9"],
+      // }),
+      splitVendorChunkPlugin(),
+      Pages({}),
+      createHtmlPlugin({
+        inject: {
+          data: {
+            VITE_APP_NODERED_HOST:env.VITE_APP_NODERED_HOST,
+            VITE_APP_NODERED_UIBUILDER_NAMESPACE:env.VITE_APP_NODERED_UIBUILDER_NAMESPACE,
+            mode,
+          },
+        },
+      }),
+    ],
+    server: {
+      port: 7146,
+      proxy: {
+        "/api": {
+          // target: "http://atcc-workshoptest.ciih.net",
+          target: "http://192.168.1.125:8000",
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api/, '')
+        },
+        //测试时的socket.io代理到本地的NodeRed服务器
+        "/uibuilder/vendor/socket.io/" : {
+          target: "http://192.168.1.125:1880",
+          changeOrigin: true
+        }
+      },
+    },
+  }
+});
