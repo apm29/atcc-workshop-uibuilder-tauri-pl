@@ -16,6 +16,11 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "app": {
+        "all": true, // enable all app APIs
+        "show": true,
+        "hide": true
       }
     },
     "bundle": {

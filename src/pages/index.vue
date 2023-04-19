@@ -33,7 +33,7 @@
       </div>
     </ImpactAlert>
     <EvaImpactAlert
-      :value="A8_ERROR_OCCURED"
+      :value="A8_ERROR_OCCURRED"
       text="white 2xl center"
       title="A8报警!!!"
     >
@@ -63,7 +63,7 @@ const checkHistory = function () {
 const { connected } = useUiBuilder();
 
 const deviceStateStore = useDeviceStateStore();
-const { A8_ERROR_OCCURED } = toRefs(deviceStateStore);
+const { A8_ERROR_OCCURRED } = toRefs(deviceStateStore);
 </script>
 
 <style lang="scss" scoped>

@@ -48,7 +48,7 @@ export const useDeviceStateStore = defineStore("device-state", () => {
   const MESSAGE_PL_485 = ref()
 
   //报警
-  const A8_ERROR_OCCURED = ref(false)
+  const A8_ERROR_OCCURRED = ref(false)
 
   onMessageReceive((msg) => {
     const { topic, payload } = msg;
@@ -74,7 +74,7 @@ export const useDeviceStateStore = defineStore("device-state", () => {
 
     //重要报警
     //A8
-    A8_ERROR_OCCURED.value = PL_PLC_PAYLOAD.value?.A8_Err ?? false;
+    A8_ERROR_OCCURRED.value = PL_PLC_PAYLOAD.value?.A8_Err ?? false;
   })
 
   return {
@@ -87,6 +87,6 @@ export const useDeviceStateStore = defineStore("device-state", () => {
     MESSAGE_PL_PLC,
     MESSAGE_PL_485,
     //alert
-    A8_ERROR_OCCURED
+    A8_ERROR_OCCURRED
   }
 })
